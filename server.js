@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const AuthRouter = require("./routes/auth.routes");
+const UserRouter = require("./routes/user.routes");
 
 const globalErrorHandler = require("./middlewares/globalErrorHandler.middleware");
 
@@ -23,6 +24,7 @@ app.use(
 );
 
 app.use("/api/v1/auth", AuthRouter);
+app.use("/api/v1/user", UserRouter);
 
 app.use(globalErrorHandler);
 

@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const createError = require("../utils/createError");
 const sendToken = require("../utils/jwtToken");
+const bcrypt = require("bcrypt");
 
 const signup = async (req, res, next) => {
   try {
@@ -49,6 +50,13 @@ const signIn = async (req, res, next) => {
     const existingUser = await User.findOne({ username });
 
     if (!existingUser) return next(createError("User does not exists", 400));
+
+    const comparePassword = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+
+    if (!comparePassword) return next(createError("wrong password", 400));
 
     sendToken(existingUser, 200, res);
   } catch (error) {

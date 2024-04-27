@@ -41,11 +41,15 @@ const userSchema = mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  console.log(this.isModified("password"));
+
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12);
   }
+
   next();
 });
+
 userSchema.methods.getJWTToken = async function () {
   try {
     let token = jwt.sign(
